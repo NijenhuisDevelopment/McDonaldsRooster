@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+<main role="main" class="container-fluid pl-0 ml-0">
+
+    <div class="row">
+        <div class="col-md-16">
+            <h5 class="display-4 mt-5">Dit zijn de diensten die we voor je gevonden hebben</h5>
+
+            <table class="table mt-5">
+                <thead>
+                <tr>
+                    <th scope="col">Starttijd</th>
+                    <th scope="col">Eindtijd</th>
+                    <th scope="col">Station</th>
+                </tr>
+                </thead>
+                {% for event in events%}
+                <tbody>
+                <tr>
+                    <td>{{event.startTime}}</td>
+                    <td>{{event.endTime}}</td>
+                    <td>{{event.station}}</td>
+                </tr>
+                </tbody>
+                {%endfor%}
+            </table>
+            <a href="{{url_for('main.add_events_to_calendar')}}"><button class="btn btn-primary btn-block">Toevoegen</button></a>
+        </div>
+    </div>
+
+</main>
+
+{%endblock content%}
