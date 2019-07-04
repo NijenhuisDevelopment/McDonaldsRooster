@@ -1,21 +1,22 @@
 from __future__ import print_function
 from datetime import datetime, timedelta
 import re
-
+import json
 
 class Workday:
-    def __init__(self, start_time, end_time, station):
-        self.startTime = start_time
-        self.endTime = end_time
+    def __init__(self, start_time, end_time, station, add_event):
+        self.start_time = start_time
+        self.end_time = end_time
         self.station = station
+        self.add_event = add_event
+
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
 
 def create_event(event, service):
     event = service.events().insert(calendarId='primary', body=event).execute()
     print('Event created: %s' % (event.get('htmlLink')))
-
-
-workdays = []
 
 
 def parse_file(text_file):
@@ -62,6 +63,9 @@ def parse_file(text_file):
         prepare_events(start_date[i], end_time[i], station[i])
 
 
+workdays = []
+
+
 def get_all_events():
     return workdays
 
@@ -76,9 +80,9 @@ def prepare_events(start_date, end_time, station):
     s = str(start.date()) + "T" + str(start.time()) + "+02:00"
     e = str(end.date()) + "T" + str(end.time()) + "+02:00"
 
-    # 2019-07-09T21:00:00+02:00
-    w = Workday(s, e, station)
+    w = Workday(s, e, station, True)
     workdays.append(w)
+    return workdays
 
 
 def translate(l):

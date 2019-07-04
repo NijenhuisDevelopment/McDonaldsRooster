@@ -14,9 +14,16 @@
             </p>
 
             {%if auth%}
-                <a href="{{url_for('main.fetch_email')}}"><button type="button" class="btn btn-primary btn-block">Toevoegen</button></a>
+            <a href="{{url_for('main.fetch_all_mail')}}">
+                <button type="button" class="btn btn-primary btn-block">Alles Ophalen</button>
+            </a>
+            <a href="{{url_for('main.fetch_latest_mail')}}">
+                <button type="button" class="btn btn-primary btn-block mt-2">Laatste Ophalen</button>
+            </a>
             {%else%}
-                <a href="{{url_for('authentication.login')}}"><button type="button" class="btn btn-primary btn-block">Inloggen</button></a>
+            <a href="{{url_for('authentication.login')}}">
+                <button type="button" class="btn btn-primary btn-block">Inloggen</button>
+            </a>
             {%endif%}
 
         </div>
