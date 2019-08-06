@@ -5,30 +5,39 @@
     <div class="row">
         <div class="col-md-16">
             <h5 class="display-4 mt-5">Dit zijn de diensten die we voor je gevonden hebben</h5>
+            {% if (events is defined) and events %}
+
 
             <table class="table mt-5">
                 <thead>
                 <tr>
-<!--                    <th scope="col">Toevoegen</th>-->
+                    <!--                    <th scope="col">Toevoegen</th>-->
                     <th scope="col">Starttijd</th>
                     <th scope="col">Eindtijd</th>
                     <th scope="col">Station</th>
                 </tr>
                 </thead>
 
-                {% for event in events%}
+
                 <tbody>
+                {% for event in events%}
                 <tr>
                     <td>{{event.start_time}}</td>
                     <td>{{event.end_time}}</td>
                     <td>{{event.station}}</td>
                 </tr>
-                </tbody>
                 {%endfor%}
+                </tbody>
             </table>
+
             <a href="{{url_for('main.add_events_to_calendar')}}">
                 <button class="btn btn-primary btn-block">Toevoegen</button>
             </a>
+
+            {%else%}
+            <p>We hebben geen diensten voor je kunnen vinden die in de afgelopen 7 dagen zijn versuurd.</p>
+            {%endif%}
+
 
         </div>
     </div>

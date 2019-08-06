@@ -46,6 +46,7 @@ def fetch_all_mail():
     if authentication.is_logged_in():
 
         response, subject = mail.get_body_from_messages()
+        print(subject)
         wd = prepare_events_for_calendar_all(subject, response)
         copied = copy.deepcopy(wd)
         copied.sort(key=lambda r: r.start_time)
@@ -107,12 +108,11 @@ def prepare_events_for_calendar(subject, response):
     return kalendar.get_all_events()
 
 
-@main.route("/rooster/add", methods=["POST"])
+@main.route("/rooster/add")
 def add_events_to_calendar():
     locale.setlocale(locale.LC_ALL, 'C')
     workdays = kalendar.get_all_events()
     service = authentication.build_calendar_api()
-
 
     for w in workdays:
         event = {
@@ -121,6 +121,6 @@ def add_events_to_calendar():
             'end': {'dateTime': w.end_time, },
             'reminders': {'useDefault': True, },
         }
-        # kalendar.create_event(event, service)
+        kalendar.create_event(event, service)
     flash("Rooster is toegevoegd", "info")
     return render_template('home.html', auth=True)

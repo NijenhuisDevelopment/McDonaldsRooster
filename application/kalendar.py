@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import re
 import json
 
+
 class Workday:
     def __init__(self, start_time, end_time, station, add_event):
         self.start_time = start_time
@@ -26,7 +27,7 @@ def parse_file(text_file):
 
         workday_regex = ".*(?= - )"
         end_day_regex = " -([^,]+)"
-        station_regex = ", ..."
+        station_regex = ", [A-Z][A-Z][A-Z]"
 
         start_date = []
         end_time = []
@@ -40,15 +41,15 @@ def parse_file(text_file):
                 start_date.append(found0)
                 out.append(found0)
 
-                reg1 = re.search(end_day_regex, line)
-                if reg1:
-                    found1 = reg1.group(0)
-                    end_time.append(found1.strip(' - '))
+            reg1 = re.search(end_day_regex, line)
+            if reg1:
+                found1 = reg1.group(0)
+                end_time.append(found1.strip(' - '))
 
-                    reg2 = re.search(station_regex, line)
-                    if reg2:
-                        found2 = reg2.group(0)
-                        station.append(found2.strip(', '))
+            reg2 = re.search(station_regex, line)
+            if reg2:
+                found2 = reg2.group(0)
+                station.append(found2.strip(', '))
 
     for i in range(len(end_time)):
         date = start_date[i]

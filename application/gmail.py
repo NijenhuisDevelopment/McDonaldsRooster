@@ -8,18 +8,21 @@ import authentication
 def get_body_from_messages():
     service = authentication.build_gmail_api()
     messages = list_messages_matching_query(
-        service, "me", "from:1184@nl.mcd.com newer_than:130d")
+        service, "me", "from:1184@nl.mcd.com newer_than:65d")
     msg_str_formatted = []
     subject = []
 
     for m in messages:
         msg = get_message(service, 'me', m['id'])
 
-        msg_str = str(base64.b64decode(msg['payload']['body']['data']))
+        # print(msg['payload']['body']['data'])
+
+        msg_str = str(base64.b64decode(msg['payload']['body']['data'] + "=========="))
         msg_str_formatted.append(msg_str.replace('\\r', '').replace('\\n', '\n'))
         headers = msg['payload']['headers']
         subject.append(str([i['value']
                        for i in headers if i['name'] == 'Subject'][0]))
+        #print(subject)
     return msg_str_formatted, subject
 
 

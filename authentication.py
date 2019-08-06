@@ -1,5 +1,6 @@
 import functools
-import json
+import os
+
 import flask
 
 from authlib.client import OAuth2Session
@@ -18,19 +19,19 @@ def build_gmail_api():
     return googleapiclient.discovery.build('gmail', 'v1', credentials=credentials)
 
 
-with open('/etc/mcdonalds_rooster_config.json') as config_file:
-    config = json.load(config_file)
+ACCESS_TOKEN_URI = 'https://www.googleapis.com/oauth2/v4/token'
+AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent'
 
+AUTHORIZATION_SCOPE = 'openid email profile https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/calendar'
 
-ACCESS_TOKEN_URI = config.get("ACCESS_TOKEN_URI")
-AUTHORIZATION_URL = config.get("AUTHORIZATION_URL")
-
-AUTHORIZATION_SCOPE = config.get("AUTHORIZATION_SCOPE")
-
-AUTH_REDIRECT_URI = config.get("AUTH_REDIRECT_URI_DEPLOYMENT")
-BASE_URI = config.get("BASE_URI_DEPLOYMENT")
-CLIENT_ID = config.get("CLIENT_ID")
-CLIENT_SECRET = config.get("CLIENT_SECRET")
+# os.environ.get("FN_AUTH_REDIRECT_URI", default=False)
+AUTH_REDIRECT_URI = "http://localhost:5000/google/auth"
+# os.environ.get("FN_BASE_URI", default=False)
+BASE_URI = "http://localhost:5000/home"
+# os.environ.get("FN_CLIENT_ID", default=False)
+CLIENT_ID = "738041216887-i9626veav1lf40ihqc68luo207k1q5dg.apps.googleusercontent.com"
+# os.environ.get("FN_CLIENT_SECRET", default=False)
+CLIENT_SECRET = "N72g13GkkFTk-ZaBtlE0NQDD"
 
 AUTH_TOKEN_KEY = 'auth_token'
 AUTH_STATE_KEY = 'auth_state'
